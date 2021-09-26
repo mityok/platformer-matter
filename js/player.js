@@ -97,6 +97,13 @@ export default class Player {
 
     // Track the keys
     const { LEFT, RIGHT, UP, A, D, W } = Phaser.Input.Keyboard.KeyCodes;
+    this.scene.input.on("pointerdown", () => {
+      this.pointerDown = true;
+    });
+    this.scene.input.on("pointerup", () => {
+      this.pointerDown = false;
+    });
+
     this.leftInput = new MultiKey(scene, [LEFT, A]);
     this.rightInput = new MultiKey(scene, [RIGHT, D]);
     this.jumpInput = new MultiKey(scene, [UP, W]);
@@ -144,7 +151,7 @@ export default class Player {
     const velocity = sprite.body.velocity;
     const isRightKeyDown = this.rightInput.isDown();
     const isLeftKeyDown = this.leftInput.isDown();
-    const isJumpKeyDown = this.jumpInput.isDown();
+    const isJumpKeyDown = this.jumpInput.isDown() || this.pointerDown;
     const isOnGround = this.isTouching.ground;
     const isInAir = !isOnGround;
 
